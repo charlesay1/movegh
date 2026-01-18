@@ -1,0 +1,1028 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MoveGH UI Preview</title>
+  <style>
+    :root {
+      --navy: #0A2540;
+      --electric: #1DA1F2;
+      --lime: #A3E635;
+      --gold: #F6C945;
+      --ghana-red: #CE1126;
+      --ghana-gold: #FCD116;
+      --ghana-green: #006B3F;
+      --ink: #0b1222;
+      --mist: #f4f7fb;
+      --paper: #ffffff;
+      --glow: rgba(29, 161, 242, 0.28);
+      --shadow: 0 18px 40px rgba(9, 25, 48, 0.18);
+      --radius: 22px;
+      --radius-lg: 30px;
+      --display: "Space Grotesk", "Sora", "Epilogue", "Segoe UI", sans-serif;
+      --body: "Work Sans", "IBM Plex Sans", "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 28px 20px 48px;
+      font-family: var(--body);
+      color: var(--ink);
+      background:
+        radial-gradient(1100px 500px at 6% -10%, rgba(29, 161, 242, 0.28), transparent 65%),
+        radial-gradient(900px 420px at 88% 8%, rgba(163, 230, 53, 0.25), transparent 70%),
+        linear-gradient(140deg, #fff7ea 0%, #f4f7fb 45%, #eef6ff 100%);
+    }
+
+    h1, h2, h3 {
+      font-family: var(--display);
+      margin: 0;
+    }
+
+    h1 {
+      font-size: clamp(28px, 3.4vw, 40px);
+      letter-spacing: -0.02em;
+    }
+
+    h2 {
+      font-size: clamp(20px, 2.4vw, 28px);
+      margin-bottom: 12px;
+    }
+
+    p { margin: 0; }
+
+    .hero {
+      max-width: 1080px;
+      margin: 0 auto 28px;
+      padding: 22px 22px 26px;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(120deg, rgba(255, 255, 255, 0.92), rgba(245, 249, 255, 0.9));
+      box-shadow: var(--shadow);
+      border-top: 4px solid transparent;
+      border-image: linear-gradient(90deg, var(--ghana-red), var(--ghana-gold), var(--ghana-green)) 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(29, 161, 242, 0.35), transparent 70%);
+      top: -140px;
+      right: 40px;
+      animation: float 8s ease-in-out infinite;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 40% 60% 60% 40%;
+      background: radial-gradient(circle, rgba(163, 230, 53, 0.35), transparent 70%);
+      bottom: -120px;
+      left: 30px;
+      animation: float 7s ease-in-out infinite reverse;
+    }
+
+    .hero-top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 18px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+    }
+
+    .hero-logo img {
+      width: 44px;
+      height: 44px;
+    }
+
+    .hero-text {
+      max-width: 720px;
+    }
+
+    .hero-text p {
+      margin-top: 10px;
+      color: #2b3a56;
+      font-size: 15px;
+      line-height: 1.55;
+    }
+
+    .hero-tags {
+      margin-top: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .tag {
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      background: rgba(10, 37, 64, 0.08);
+      color: #0f2946;
+    }
+    .tag.ghana {
+      background: linear-gradient(90deg, rgba(206, 17, 38, 0.16), rgba(252, 209, 22, 0.18), rgba(0, 107, 63, 0.16));
+      color: #0f2946;
+    }
+
+    .layout {
+      display: grid;
+      gap: 22px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .panel {
+      background: var(--paper);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .subtitle {
+      color: #41506b;
+      font-size: 14px;
+      margin-top: 6px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 18px;
+      margin-top: 16px;
+    }
+
+    .phone {
+      background: #0c1424;
+      border-radius: 34px;
+      padding: 12px;
+      position: relative;
+      box-shadow: 0 16px 30px rgba(9, 17, 33, 0.35);
+    }
+
+    .phone::before {
+      content: "";
+      position: absolute;
+      width: 58px;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.22);
+      border-radius: 999px;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .screen {
+      border-radius: 26px;
+      overflow: hidden;
+      min-height: 420px;
+      background: var(--mist);
+    }
+
+    .screen.splash {
+      background:
+        radial-gradient(80% 80% at 30% 10%, rgba(29, 161, 242, 0.5), transparent 65%),
+        radial-gradient(60% 60% at 70% 20%, rgba(163, 230, 53, 0.3), transparent 70%),
+        linear-gradient(160deg, #0A2540 0%, #0b2038 55%, #091424 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #f8fafc;
+      gap: 10px;
+      padding: 20px;
+    }
+
+    .screen.splash img {
+      width: 88px;
+      height: 88px;
+      filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.35));
+      animation: pulse 2.6s ease-in-out infinite;
+    }
+
+    .screen.splash .title {
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .screen.splash .tagline {
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(248, 250, 252, 0.7);
+    }
+
+    .screen.home {
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      background: linear-gradient(180deg, #eef6ff 0%, #f7fafc 60%, #ffffff 100%);
+    }
+
+    .home-header {
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .home-header img { width: 28px; height: 28px; }
+
+    .home-search {
+      margin: 0 14px;
+      padding: 14px;
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: 0 12px 20px rgba(10, 37, 64, 0.08);
+      font-size: 13px;
+      color: #4b5563;
+    }
+    .intent-toggle {
+      margin: 0 14px 12px;
+      padding: 4px;
+      background: #fff;
+      border-radius: 999px;
+      display: flex;
+      gap: 6px;
+      box-shadow: 0 10px 18px rgba(10, 37, 64, 0.08);
+      border: 1px solid #e2e8f0;
+    }
+    .intent-tab {
+      flex: 1;
+      text-align: center;
+      padding: 6px 0;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #64748b;
+      cursor: pointer;
+    }
+    .intent-tab.active {
+      background: linear-gradient(120deg, var(--electric), #43c7ff);
+      color: #fff;
+    }
+    .intent-tab.delivery {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .intent-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--ghana-green);
+      box-shadow: 0 0 0 3px rgba(0, 107, 63, 0.14);
+    }
+    .where-input {
+      margin: 0 14px 12px;
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 10px 18px rgba(10, 37, 64, 0.08);
+    }
+    .where-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--ghana-red);
+      box-shadow: 0 0 0 4px rgba(206, 17, 38, 0.12);
+    }
+    .where-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .where-subtitle {
+      font-size: 11px;
+      color: #64748b;
+    }
+
+    .mode-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      padding: 12px 14px;
+    }
+
+    .mode {
+      border-radius: 14px;
+      background: #ffffff;
+      padding: 8px 6px;
+      font-size: 11px;
+      text-align: center;
+      border: 1px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      color: #475569;
+    }
+    .mode span {
+      line-height: 1.2;
+    }
+
+    .mode.active {
+      border-color: rgba(29, 161, 242, 0.6);
+      background: #e6f6ff;
+      color: #0b4e7a;
+      font-weight: 600;
+    }
+    .mode-icon {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+    .mode-icon.car { color: var(--electric); }
+    .mode-icon.bike { color: var(--ghana-green); }
+    .mode-icon.pragya { color: var(--ghana-gold); }
+    .mode-icon.aboboyaa { color: var(--ghana-red); }
+
+    .home-cta {
+      padding: 12px 16px 16px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      flex: 1;
+      border-radius: 14px;
+      border: none;
+      padding: 12px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn.primary {
+      background: linear-gradient(120deg, var(--electric), #43c7ff);
+      color: #fff;
+      box-shadow: 0 12px 20px rgba(29, 161, 242, 0.25);
+    }
+
+    .btn.secondary {
+      background: #f3f4f6;
+      color: #0f172a;
+    }
+
+    .screen.select {
+      background: #ffffff;
+      padding: 14px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .card {
+      border-radius: 16px;
+      padding: 12px;
+      border: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f8fafc;
+    }
+    .card-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card strong { font-size: 13px; }
+    .card span { font-size: 11px; color: #64748b; }
+
+    .pill {
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 10px;
+      background: rgba(163, 230, 53, 0.25);
+      color: #39510f;
+      font-weight: 700;
+    }
+    .fare-details {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #64748b;
+      padding: 4px 2px 0;
+    }
+    .fare-link {
+      appearance: none;
+      color: #0b4e7a;
+      font-weight: 700;
+      border: 1px solid rgba(29, 161, 242, 0.35);
+      background: rgba(29, 161, 242, 0.08);
+      padding: 4px 8px;
+      border-radius: 999px;
+      cursor: pointer;
+      text-decoration: underline;
+      font-size: 11px;
+      font-family: inherit;
+    }
+    .trust-row {
+      display: flex;
+      justify-content: flex-start;
+      padding: 2px 2px 0;
+    }
+    .trust-badge {
+      font-size: 10px;
+      font-weight: 700;
+      color: #0f3d26;
+      background: rgba(0, 107, 63, 0.14);
+      border: 1px solid rgba(0, 107, 63, 0.3);
+      padding: 4px 8px;
+      border-radius: 999px;
+      letter-spacing: 0.02em;
+    }
+
+    .screen.track {
+      background: linear-gradient(180deg, #0a2540 0%, #0b1e34 60%, #0f172a 100%);
+      color: #fff;
+      padding: 16px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .track-card {
+      border-radius: 16px;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.08);
+      font-size: 12px;
+    }
+    .track-actions {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+    .action-button {
+      border: none;
+      border-radius: 12px;
+      padding: 10px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.12);
+      color: #f8fafc;
+      cursor: pointer;
+    }
+    .action-button.sos {
+      grid-column: 1 / -1;
+      background: var(--ghana-red);
+      color: #fff;
+      letter-spacing: 0.04em;
+    }
+
+    .screen.delivery {
+      background: #fdf6e9;
+      padding: 16px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .delivery-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 12px;
+      box-shadow: 0 10px 16px rgba(9, 25, 48, 0.1);
+      font-size: 12px;
+      color: #4b5563;
+    }
+
+    .screen.wallet {
+      background: #ffffff;
+      padding: 16px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .balance {
+      border-radius: 18px;
+      padding: 14px;
+      background: linear-gradient(120deg, #0A2540, #0d3455);
+      color: #fff;
+      font-size: 12px;
+    }
+
+    .list {
+      border-radius: 16px;
+      padding: 12px;
+      background: #f8fafc;
+      font-size: 12px;
+      color: #475569;
+    }
+
+    .web-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 18px;
+      margin-top: 16px;
+    }
+
+    .dashboard {
+      border-radius: 22px;
+      background: #ffffff;
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+    }
+
+    .dashboard-header {
+      background: linear-gradient(120deg, #0A2540, #11416c);
+      color: #fff;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13px;
+    }
+
+    .dashboard-body {
+      padding: 16px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .stat {
+      background: #f8fafc;
+      border-radius: 14px;
+      padding: 12px;
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+      color: #334155;
+    }
+
+    .table {
+      border-radius: 14px;
+      border: 1px solid #e2e8f0;
+      padding: 8px;
+      font-size: 11px;
+      color: #4b5563;
+    }
+
+    .badge {
+      font-size: 10px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(206, 17, 38, 0.15), rgba(252, 209, 22, 0.2), rgba(0, 107, 63, 0.15));
+      color: #0b4e7a;
+      font-weight: 700;
+    }
+    .driver-status {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 4px 0;
+      font-size: 11px;
+      color: #475569;
+    }
+    .status-toggle {
+      display: flex;
+      background: #eef2f7;
+      border-radius: 999px;
+      padding: 3px;
+      gap: 4px;
+    }
+    .status-toggle span {
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 700;
+      color: #475569;
+    }
+    .status-toggle .active {
+      background: var(--ghana-green);
+      color: #fff;
+    }
+    .card.driver-card {
+      display: grid;
+      gap: 10px;
+      align-items: start;
+    }
+    .card-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .card-actions {
+      display: flex;
+      gap: 8px;
+    }
+    .card-actions button {
+      flex: 1;
+      border: none;
+      border-radius: 10px;
+      padding: 8px 6px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .card-actions .accept {
+      background: linear-gradient(120deg, var(--electric), #43c7ff);
+      color: #fff;
+    }
+    .card-actions .reject {
+      background: rgba(206, 17, 38, 0.12);
+      color: #991b1b;
+    }
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .filter-pill {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid #e2e8f0;
+      font-size: 11px;
+      color: #334155;
+      background: #ffffff;
+    }
+    .export-button {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: none;
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(120deg, var(--navy), #11416c);
+      cursor: pointer;
+    }
+    .pipeline-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #1f2937;
+      margin-top: 6px;
+    }
+    .pipeline {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+    .pipeline-step {
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 8px;
+      font-size: 10px;
+      text-align: center;
+      border: 1px solid #e2e8f0;
+    }
+    .pipeline-step strong {
+      display: block;
+      font-size: 12px;
+      margin-top: 4px;
+      color: #0b4e7a;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(12px); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+    }
+
+    @media (max-width: 720px) {
+      body { padding: 18px 14px 32px; }
+      .hero { padding: 18px; }
+      .screen { min-height: 380px; }
+    }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="hero-top">
+      <div class="hero-logo">
+        <img src="../../assets/branding/movegh-mark.svg" alt="MoveGH mark">
+        <div>
+          <h1>MoveGH UI Preview</h1>
+          <p class="subtitle">Ghana in Motion</p>
+        </div>
+      </div>
+      <div class="hero-text">
+        <p>Nationwide ride-hailing and delivery for Ghana with cars, motorbikes, pragya, and aboboyaa. Mobile Money and landmark pickups are built in from day one.</p>
+        <div class="hero-tags">
+          <span class="tag ghana">One App. Every Route.</span>
+          <span class="tag">16 Regions</span>
+          <span class="tag">USSD + MoMo</span>
+          <span class="tag">City to Rural</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="layout">
+    <section class="panel">
+      <h2>Rider app screens</h2>
+      <p class="subtitle">Splash, home, selection, tracking, and delivery flow snapshots.</p>
+      <div class="grid">
+        <div class="phone">
+          <div class="screen splash">
+            <img src="../../assets/branding/movegh-app-icon.svg" alt="MoveGH app icon">
+            <div class="title">MoveGH</div>
+            <div class="tagline">Ghana in Motion</div>
+          </div>
+        </div>
+        <div class="phone">
+          <div class="screen home">
+            <div class="home-header">
+              <img src="../../assets/branding/movegh-mark.svg" alt="MoveGH mark">
+              <span class="badge">Accra</span>
+            </div>
+            <div class="intent-toggle">
+              <div class="intent-tab active">Ride</div>
+              <div class="intent-tab delivery">
+                <span class="intent-dot"></span>
+                <span>Delivery</span>
+              </div>
+            </div>
+            <div class="where-input">
+              <span class="where-dot"></span>
+              <div>
+                <div class="where-title">Where to?</div>
+                <div class="where-subtitle">Landmark or address</div>
+              </div>
+            </div>
+            <div class="home-search">Pickup: Osu Junction -> Drop-off: East Legon</div>
+            <div class="mode-row">
+              <div class="mode active">
+                <svg class="mode-icon car" viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="3" y="9" width="18" height="6" rx="1.5"></rect>
+                  <path d="M7 9l2-3h6l2 3"></path>
+                  <circle cx="7.5" cy="17" r="1.5"></circle>
+                  <circle cx="16.5" cy="17" r="1.5"></circle>
+                </svg>
+                <span>Car</span>
+              </div>
+              <div class="mode">
+                <svg class="mode-icon bike" viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="6.5" cy="17" r="3"></circle>
+                  <circle cx="17.5" cy="17" r="3"></circle>
+                  <path d="M6.5 17l4-7h3l2 4"></path>
+                  <path d="M13.5 10l2-3"></path>
+                </svg>
+                <span>Bike</span>
+              </div>
+              <div class="mode">
+                <svg class="mode-icon pragya" viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="4" y="10" width="12" height="5" rx="1.5"></rect>
+                  <path d="M8 10l2-3h6v3"></path>
+                  <circle cx="8" cy="17" r="2"></circle>
+                  <circle cx="16" cy="17" r="2"></circle>
+                </svg>
+                <span>Pragya</span>
+              </div>
+              <div class="mode">
+                <svg class="mode-icon aboboyaa" viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="3" y="10" width="10" height="5" rx="1.2"></rect>
+                  <rect x="13" y="11" width="7" height="4" rx="1"></rect>
+                  <circle cx="7" cy="17" r="2"></circle>
+                  <circle cx="17" cy="17" r="2"></circle>
+                </svg>
+                <span>Aboboyaa Cargo</span>
+              </div>
+            </div>
+            <div class="home-cta">
+              <button class="btn primary">Request Ride</button>
+              <button class="btn secondary">Schedule</button>
+            </div>
+          </div>
+        </div>
+        <div class="phone">
+          <div class="screen select">
+            <div class="card">
+              <div class="card-left">
+                <svg class="mode-icon car" viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="3" y="9" width="18" height="6" rx="1.5"></rect>
+                  <path d="M7 9l2-3h6l2 3"></path>
+                  <circle cx="7.5" cy="17" r="1.5"></circle>
+                  <circle cx="16.5" cy="17" r="1.5"></circle>
+                </svg>
+                <div>
+                  <strong>Comfort Car</strong><br>
+                  <span>3 mins away - GHS 24</span>
+                </div>
+              </div>
+              <span class="pill">Popular</span>
+            </div>
+            <div class="card">
+              <div class="card-left">
+                <svg class="mode-icon bike" viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="6.5" cy="17" r="3"></circle>
+                  <circle cx="17.5" cy="17" r="3"></circle>
+                  <path d="M6.5 17l4-7h3l2 4"></path>
+                  <path d="M13.5 10l2-3"></path>
+                </svg>
+                <div>
+                  <strong>Okada Bike</strong><br>
+                  <span>2 mins away - GHS 12</span>
+                </div>
+              </div>
+              <span class="pill">Fast</span>
+            </div>
+            <div class="card">
+              <div class="card-left">
+                <svg class="mode-icon pragya" viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="4" y="10" width="12" height="5" rx="1.5"></rect>
+                  <path d="M8 10l2-3h6v3"></path>
+                  <circle cx="8" cy="17" r="2"></circle>
+                  <circle cx="16" cy="17" r="2"></circle>
+                </svg>
+                <div>
+                  <strong>Pragya</strong><br>
+                  <span>5 mins away - GHS 10</span>
+                </div>
+              </div>
+              <span class="pill">Shared</span>
+            </div>
+            <div class="card">
+              <div class="card-left">
+                <svg class="mode-icon aboboyaa" viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="3" y="10" width="10" height="5" rx="1.2"></rect>
+                  <rect x="13" y="11" width="7" height="4" rx="1"></rect>
+                  <circle cx="7" cy="17" r="2"></circle>
+                  <circle cx="17" cy="17" r="2"></circle>
+                </svg>
+                <div>
+                  <strong>Aboboyaa Cargo</strong><br>
+                  <span>7 mins away - GHS 18</span>
+                </div>
+              </div>
+              <span class="pill">Load</span>
+            </div>
+            <div class="fare-details">
+              <span>Est. 5.4 km | 14 min</span>
+              <button class="fare-link" type="button">Fare breakdown</button>
+            </div>
+            <div class="trust-row">
+              <span class="trust-badge">Verified driver</span>
+            </div>
+          </div>
+        </div>
+        <div class="phone">
+          <div class="screen track">
+            <div class="track-card">Driver: Kojo Mensah - 4.9 rating</div>
+            <div class="track-card">Live ETA: 4 minutes</div>
+            <div class="track-card">Pickup: Kumasi Central Market</div>
+            <div class="track-card">Share trip with family</div>
+            <div class="track-actions">
+              <button class="action-button">Call Driver</button>
+              <button class="action-button">Call Support</button>
+              <button class="action-button sos">SOS</button>
+            </div>
+          </div>
+        </div>
+        <div class="phone">
+          <div class="screen delivery">
+            <div class="delivery-card">Delivery: Grocery bundle - Aboboyaa Cargo</div>
+            <div class="delivery-card">Recipient: Abena - 024-000-0000</div>
+            <div class="delivery-card">Payment: MTN MoMo - GHS 18</div>
+            <div class="delivery-card">Drop-off: Madina Market Gate</div>
+            <div class="delivery-card">Package size (pricing tier): Small (0-5 kg) | Medium (5-15 kg) | Large (15+ kg)</div>
+            <div class="delivery-card">Proof of delivery: Photo | OTP | Signature</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Driver app screens</h2>
+      <p class="subtitle">Dispatch, earnings, and wallet visibility for drivers.</p>
+      <div class="grid">
+        <div class="phone">
+          <div class="screen select">
+            <div class="driver-status">
+              <span>Driver status</span>
+              <div class="status-toggle">
+                <span class="active">Online</span>
+                <span>Offline</span>
+              </div>
+            </div>
+            <div class="card driver-card">
+              <div class="card-row">
+                <div>
+                  <strong>New Ride - Car</strong><br>
+                  <span>Osu Junction to Airport</span>
+                </div>
+                <span class="pill">GHS 24</span>
+              </div>
+              <div class="card-actions">
+                <button class="accept">Accept</button>
+                <button class="reject">Reject</button>
+              </div>
+            </div>
+            <div class="card driver-card">
+              <div class="card-row">
+                <div>
+                  <strong>Delivery - Aboboyaa Cargo</strong><br>
+                  <span>Makola to Madina Market</span>
+                </div>
+                <span class="pill">GHS 20</span>
+              </div>
+              <div class="card-actions">
+                <button class="accept">Accept</button>
+                <button class="reject">Reject</button>
+              </div>
+            </div>
+            <div class="card driver-card">
+              <div class="card-row">
+                <div>
+                  <strong>Scheduled Pickup</strong><br>
+                  <span>School run - 7:10 AM</span>
+                </div>
+                <span class="pill">Scheduled</span>
+              </div>
+              <div class="card-actions">
+                <button class="accept">Accept</button>
+                <button class="reject">Reject</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="phone">
+          <div class="screen wallet">
+            <div class="balance">Wallet Balance: GHS 320</div>
+            <div class="list">Today: 12 trips - GHS 180</div>
+            <div class="list">This week: 68 trips - GHS 920</div>
+            <div class="list">MoMo payout: Ready</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Business + Admin web dashboards</h2>
+      <p class="subtitle">Bulk deliveries, billing, and regional operations control.</p>
+      <div class="web-grid">
+        <div class="dashboard">
+          <div class="dashboard-header">
+            <span>Business Portal</span>
+            <span class="badge">Bulk Requests</span>
+          </div>
+          <div class="dashboard-body">
+            <div class="toolbar">
+              <span class="filter-pill">Region: Accra</span>
+              <span class="filter-pill">Mode: All</span>
+              <button class="export-button">Export CSV</button>
+            </div>
+            <div class="stat"><span>Active Deliveries</span><strong>42</strong></div>
+            <div class="stat"><span>Monthly Spend</span><strong>GHS 8,420</strong></div>
+            <div class="table">Scheduled: 12 - In Transit: 18 - Completed: 30</div>
+          </div>
+        </div>
+        <div class="dashboard">
+          <div class="dashboard-header">
+            <span>Admin Control</span>
+            <span class="badge">Pricing by Region</span>
+          </div>
+          <div class="dashboard-body">
+            <div class="toolbar">
+              <span class="filter-pill">Region: All</span>
+              <span class="filter-pill">Drivers: Pending</span>
+              <button class="export-button">Export CSV</button>
+            </div>
+            <div class="stat"><span>Driver Verifications</span><strong>128 pending</strong></div>
+            <div class="stat"><span>Active Regions</span><strong>16</strong></div>
+            <div class="table">Disputes: 12 - Refunds: 6 - SOS: 2</div>
+            <div class="pipeline-label">Driver onboarding pipeline</div>
+            <div class="pipeline">
+              <div class="pipeline-step">Applied<strong>84</strong></div>
+              <div class="pipeline-step">Docs<strong>52</strong></div>
+              <div class="pipeline-step">Verified<strong>31</strong></div>
+              <div class="pipeline-step">Active<strong>18</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>
