@@ -37,22 +37,43 @@ export class DriversController {
 
   @Post("status")
   setStatus(@Body() body: Record<string, unknown>) {
-    return this.service.stub("setStatus");
+    const status = body["status"];
+    return this.service.setStatus(status === "online");
   }
 
   @Get("requests")
   getRequests(@Query() query: Record<string, string>) {
-    return this.service.stub("getRequests");
+    return this.service.getRequests();
+  }
+
+  @Get("requests/:requestId")
+  getRequest(@Param() params: Record<string, string>) {
+    return this.service.getRequest(params.requestId);
   }
 
   @Post("requests/:requestId/accept")
   acceptRequest(@Param() params: Record<string, string>) {
-    return this.service.stub("acceptRequest");
+    return this.service.acceptRequest(params.requestId);
   }
 
   @Post("requests/:requestId/reject")
   rejectRequest(@Param() params: Record<string, string>) {
-    return this.service.stub("rejectRequest");
+    return this.service.rejectRequest(params.requestId);
+  }
+
+  @Post("requests/:requestId/arrive")
+  arriveRequest(@Param() params: Record<string, string>) {
+    return this.service.arriveRequest(params.requestId);
+  }
+
+  @Post("requests/:requestId/start")
+  startTrip(@Param() params: Record<string, string>) {
+    return this.service.startTrip(params.requestId);
+  }
+
+  @Post("requests/:requestId/complete")
+  completeTrip(@Param() params: Record<string, string>) {
+    return this.service.completeTrip(params.requestId);
   }
 
 }

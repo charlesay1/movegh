@@ -213,6 +213,23 @@ Response:
 }
 ```
 
+### GET /drivers/requests/:id
+Get a single request with status.
+
+Response:
+```json
+{
+  "request_id": "req_001",
+  "pickup": "Osu Junction",
+  "dropoff": "East Legon",
+  "mode": "car",
+  "notes": "Blue gate",
+  "amount": 24,
+  "currency": "GHS",
+  "status": "assigned"
+}
+```
+
 ### POST /drivers/requests/:id/accept
 Accept a request.
 
@@ -230,5 +247,35 @@ Response:
 ```json
 {
   "status": "rejected"
+}
+```
+
+### POST /drivers/requests/:id/arrive
+Mark driver arrived.
+
+Response:
+```json
+{
+  "status": "arrived"
+}
+```
+
+### POST /drivers/requests/:id/start
+Start the trip.
+
+Response:
+```json
+{
+  "status": "in_trip"
+}
+```
+
+### POST /drivers/requests/:id/complete
+Complete the trip.
+
+Response:
+```json
+{
+  "status": "completed"
 }
 ```

@@ -23,11 +23,31 @@ class DriverService {
         .toList();
   }
 
+  Future<DispatchRequest?> getRequest(String requestId) async {
+    final response = await _client.getJson("/drivers/requests/$requestId");
+    if (response["request_id"] == null && response["id"] == null) {
+      return null;
+    }
+    return DispatchRequest.fromJson(response);
+  }
+
   Future<Map<String, dynamic>> acceptRequest(String requestId) async {
     return _client.postJson("/drivers/requests/$requestId/accept", {});
   }
 
   Future<Map<String, dynamic>> rejectRequest(String requestId) async {
     return _client.postJson("/drivers/requests/$requestId/reject", {});
+  }
+
+  Future<Map<String, dynamic>> arriveRequest(String requestId) async {
+    return _client.postJson("/drivers/requests/$requestId/arrive", {});
+  }
+
+  Future<Map<String, dynamic>> startTrip(String requestId) async {
+    return _client.postJson("/drivers/requests/$requestId/start", {});
+  }
+
+  Future<Map<String, dynamic>> completeTrip(String requestId) async {
+    return _client.postJson("/drivers/requests/$requestId/complete", {});
   }
 }

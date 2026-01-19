@@ -69,3 +69,4 @@ Delivery & Logistics scope (complete):
 [x] Driver app: Dispatch polling (GET /drivers/requests)
 [x] Driver app: Accept/Reject request
 [x] Driver app: Current job screen (basic)
+[x] Driver app: Job lifecycle updates (arrived → in_trip → complete)

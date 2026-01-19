@@ -7,6 +7,7 @@ class DispatchRequest {
     required this.amount,
     required this.currency,
     this.notes,
+    this.status,
   });
 
   final String id;
@@ -16,6 +17,7 @@ class DispatchRequest {
   final double amount;
   final String currency;
   final String? notes;
+  final String? status;
 
   factory DispatchRequest.fromJson(Map<String, dynamic> json) {
     return DispatchRequest(
@@ -26,6 +28,7 @@ class DispatchRequest {
       amount: (json["amount"] as num?)?.toDouble() ?? 0,
       currency: json["currency"]?.toString() ?? "GHS",
       notes: json["notes"]?.toString(),
+      status: json["status"]?.toString(),
     );
   }
 }
