@@ -9,6 +9,8 @@ Completed:
 [x] Docs updated: architecture end-to-end flow and api contract
 [x] Driver app scaffold included in repo
 [x] Push branch feature/rider-backend-wiring from Windows (VM DNS blocked)
+[x] Rider profile updates call backend (/users/me)
+[x] App config supports API base URL + mock toggle via dart-define
 
 Artifacts created:
 [x] /home/charlesay/movegh/movegh_feature.bundle
@@ -31,7 +33,7 @@ Core Features:
 [x] (Completed) Create account (phone number / OTP)
 [x] (Completed) Login persistence (stay signed-in)
 [x] (Completed) Request ride or delivery (end-to-end rider -> backend)
-[~] (In Progress) Choose vehicle type (car/okada/pragya/aboboyaa)
+[x] (Completed) Choose vehicle type (car/okada/pragya/aboboyaa)
 [x] (Completed) Fare estimate before trip
 [~] (In Progress) Live GPS tracking screen
 [~] (In Progress) In-app call

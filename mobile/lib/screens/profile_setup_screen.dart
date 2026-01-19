@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "../routes.dart";
+import "../services/app_services.dart";
 import "../services/session_store.dart";
 import "../theme/app_theme.dart";
 import "../widgets/primary_button.dart";
@@ -47,6 +48,11 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
 
     setState(() => _isLoading = true);
     try {
+      await AppServices.users.updateProfile(
+        firstName: firstName,
+        lastName: lastName.isEmpty ? null : lastName,
+        email: email.isEmpty ? null : email,
+      );
       final session = await SessionStore.instance();
       await session.saveProfile(
         firstName: firstName,
@@ -57,6 +63,13 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
         return;
       }
       Navigator.pushReplacementNamed(context, AppRoutes.location);
+    } catch (_) {
+      if (!mounted) {
+        return;
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Unable to save profile. Try again.")),
+      );
     } finally {
       if (mounted) {
         setState(() => _isLoading = false);

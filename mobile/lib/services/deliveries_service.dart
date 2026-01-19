@@ -1,5 +1,5 @@
 import "../config/api_endpoints.dart";
-import "../config/app_config.dart";
+import "../app_config.dart";
 import "../models/delivery_request.dart";
 import "api_client.dart";
 

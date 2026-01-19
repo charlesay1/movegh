@@ -18,11 +18,14 @@ class RideRequestScreen extends StatefulWidget {
 class _RideRequestScreenState extends State<RideRequestScreen> {
   final TextEditingController _pickupController = TextEditingController(text: "Osu Junction");
   final TextEditingController _dropoffController = TextEditingController(text: "East Legon");
+  final TextEditingController _notesController = TextEditingController();
+  String _selectedMode = "car";
 
   @override
   void dispose() {
     _pickupController.dispose();
     _dropoffController.dispose();
+    _notesController.dispose();
     super.dispose();
   }
 
@@ -30,7 +33,8 @@ class _RideRequestScreenState extends State<RideRequestScreen> {
     return RideRequest(
       pickup: _pickupController.text.trim(),
       dropoff: _dropoffController.text.trim(),
-      mode: "car",
+      mode: _selectedMode,
+      notes: _notesController.text.trim().isEmpty ? null : _notesController.text.trim(),
     );
   }
 
@@ -137,7 +141,8 @@ class _RideRequestScreenState extends State<RideRequestScreen> {
                         label: "Car",
                         icon: Icons.directions_car,
                         color: AppColors.electric,
-                        isActive: true,
+                        isActive: _selectedMode == "car",
+                        onTap: () => setState(() => _selectedMode = "car"),
                       ),
                     ),
                     const SizedBox(width: 10),
@@ -146,6 +151,8 @@ class _RideRequestScreenState extends State<RideRequestScreen> {
                         label: "Bike",
                         icon: Icons.two_wheeler,
                         color: AppColors.ghanaGreen,
+                        isActive: _selectedMode == "bike",
+                        onTap: () => setState(() => _selectedMode = "bike"),
                       ),
                     ),
                     const SizedBox(width: 10),
@@ -154,6 +161,8 @@ class _RideRequestScreenState extends State<RideRequestScreen> {
                         label: "Pragya",
                         icon: Icons.electric_rickshaw,
                         color: AppColors.ghanaGold,
+                        isActive: _selectedMode == "pragya",
+                        onTap: () => setState(() => _selectedMode = "pragya"),
                       ),
                     ),
                     const SizedBox(width: 10),
@@ -162,9 +171,24 @@ class _RideRequestScreenState extends State<RideRequestScreen> {
                         label: "Aboboyaa\nCargo",
                         icon: Icons.local_shipping,
                         color: AppColors.ghanaRed,
+                        isActive: _selectedMode == "aboboyaa",
+                        onTap: () => setState(() => _selectedMode = "aboboyaa"),
                       ),
                     ),
                   ],
+                ),
+                const SizedBox(height: 12),
+                const Text("Notes (optional)", style: TextStyle(fontWeight: FontWeight.w600)),
+                const SizedBox(height: 6),
+                TextField(
+                  controller: _notesController,
+                  maxLines: 2,
+                  decoration: const InputDecoration(
+                    hintText: "Gate color, landmark, or driver instructions",
+                    filled: true,
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(borderSide: BorderSide.none),
+                  ),
                 ),
                 const SizedBox(height: 12),
                 if (estimate != null)

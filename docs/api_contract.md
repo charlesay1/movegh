@@ -2,6 +2,9 @@
 
 Base URL (local dev): `http://127.0.0.1:3000`
 
+Authenticated requests should include:
+`Authorization: Bearer <token>`
+
 ## Auth
 
 ### POST /auth/otp/request
@@ -57,7 +60,8 @@ Request:
 {
   "pickup": "Accra Mall",
   "dropoff": "Osu Oxford St",
-  "mode": "car"
+  "mode": "car",
+  "notes": "Blue gate near the church"
 }
 ```
 
@@ -83,6 +87,27 @@ Response:
   "eta_min": 4,
   "amount": 24,
   "currency": "GHS"
+}
+```
+
+## Rider: Profile
+
+### PATCH /users/me
+Update rider profile details.
+
+Request:
+```json
+{
+  "first_name": "Ama",
+  "last_name": "Mensah",
+  "email": "ama@movegh.com"
+}
+```
+
+Response:
+```json
+{
+  "status": "updated"
 }
 ```
 

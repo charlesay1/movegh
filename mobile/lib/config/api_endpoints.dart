@@ -6,6 +6,7 @@ class ApiEndpoints {
   static const deliveriesRequest = "/deliveries/request";
   static const paymentsCharge = "/payments/charge";
   static const paymentsIntent = "/payments/intent";
+  static const usersMe = "/users/me";
 
   static String rideById(String rideId) => "/rides/$rideId";
   static String rideCancel(String rideId) => "/rides/$rideId/cancel";

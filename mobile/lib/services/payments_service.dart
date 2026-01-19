@@ -1,5 +1,5 @@
 import "../config/api_endpoints.dart";
-import "../config/app_config.dart";
+import "../app_config.dart";
 import "api_client.dart";
 
 class PaymentsService {

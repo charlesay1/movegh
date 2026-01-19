@@ -3,6 +3,7 @@ import "auth_service.dart";
 import "deliveries_service.dart";
 import "payments_service.dart";
 import "rides_service.dart";
+import "user_service.dart";
 
 class AppServices {
   static final ApiClient apiClient = ApiClient();
@@ -10,4 +11,5 @@ class AppServices {
   static final RidesService rides = RidesService(apiClient);
   static final DeliveriesService deliveries = DeliveriesService(apiClient);
   static final PaymentsService payments = PaymentsService(apiClient);
+  static final UserService users = UserService(apiClient);
 }
