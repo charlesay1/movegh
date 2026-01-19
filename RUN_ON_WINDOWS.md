@@ -2,6 +2,8 @@
 
 This repo contains the Flutter app at `mobile/`. The VM cannot run a web server, so use Windows for the live demo.
 
+Platform overview: docs/PLATFORM_STRATEGY.md
+
 ## Option A: Run locally with Flutter (recommended)
 
 ### 1) Install Flutter (minimal)
