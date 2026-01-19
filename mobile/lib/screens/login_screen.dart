@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:flutter/services.dart";
 import "../routes.dart";
 import "../services/app_services.dart";
 import "../theme/app_theme.dart";
@@ -13,40 +14,60 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _pinController = TextEditingController();
   bool _isLoading = false;
+  String? _errorText;
 
   @override
   void dispose() {
     _phoneController.dispose();
-    _pinController.dispose();
     super.dispose();
   }
 
-  Future<void> _handleLogin() async {
-    final phone = _phoneController.text.trim();
-    final pin = _pinController.text.trim();
+  String? _validateGhanaNumber(String value) {
+    if (value.length != 9) {
+      return "Enter a 9-digit number";
+    }
+    final prefix = value.substring(0, 2);
+    const validPrefixes = {
+      "24",
+      "54",
+      "55",
+      "59", // MTN
+      "20",
+      "50", // Vodafone
+      "26",
+      "56",
+      "27",
+      "57", // AirtelTigo
+    };
+    if (!validPrefixes.contains(prefix)) {
+      return "Use MTN, Vodafone, or AirtelTigo";
+    }
+    return null;
+  }
 
-    if (phone.isEmpty || pin.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Enter phone number and PIN")),
-      );
+  Future<void> _sendCode() async {
+    final raw = _phoneController.text.replaceAll(RegExp(r"\D"), "");
+    final error = _validateGhanaNumber(raw);
+    setState(() => _errorText = error);
+    if (error != null) {
       return;
     }
 
+    final phone = "+233$raw";
     setState(() => _isLoading = true);
     try {
-      await AppServices.auth.verifyOtp(phone, pin);
+      await AppServices.auth.requestOtp(phone);
       if (!mounted) {
         return;
       }
-      Navigator.pushReplacementNamed(context, AppRoutes.home);
+      Navigator.pushReplacementNamed(context, AppRoutes.otp, arguments: phone);
     } catch (error) {
       if (!mounted) {
         return;
       }
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Login failed. Try again.")),
+        const SnackBar(content: Text("Could not send code. Try again.")),
       );
     } finally {
       if (mounted) {
@@ -61,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
       appBar: AppBar(
         backgroundColor: AppColors.mist,
         elevation: 0,
-        title: const Text("Sign in"),
+        title: const Text("Verify your number"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -70,63 +91,44 @@ class _LoginScreenState extends State<LoginScreen> {
           children: [
             const Text("Phone number", style: TextStyle(fontWeight: FontWeight.w600)),
             const SizedBox(height: 8),
-            TextField(
-              controller: _phoneController,
-              keyboardType: TextInputType.phone,
-              decoration: const InputDecoration(
-                hintText: "+233 24 000 0000",
-                filled: true,
-                fillColor: Colors.white,
-                border: OutlineInputBorder(borderSide: BorderSide.none),
-              ),
-            ),
-            const SizedBox(height: 16),
-            const Text("PIN", style: TextStyle(fontWeight: FontWeight.w600)),
-            const SizedBox(height: 8),
-            TextField(
-              controller: _pinController,
-              obscureText: true,
-              decoration: const InputDecoration(
-                hintText: "****",
-                filled: true,
-                fillColor: Colors.white,
-                border: OutlineInputBorder(borderSide: BorderSide.none),
-              ),
-            ),
-            const SizedBox(height: 20),
-            PrimaryButton(
-              label: _isLoading ? "Signing in..." : "Continue",
-              isLoading: _isLoading,
-              onPressed: _isLoading ? null : _handleLogin,
-            ),
-            const SizedBox(height: 16),
             Row(
               children: [
-                Expanded(
-                  child: OutlinedButton(
-                    onPressed: () {},
-                    style: OutlinedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      side: const BorderSide(color: AppColors.electric),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                    ),
-                    child: const Text("MTN MoMo"),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Text(
+                    "+233",
+                    style: TextStyle(fontWeight: FontWeight.w600),
                   ),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: OutlinedButton(
-                    onPressed: () {},
-                    style: OutlinedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      side: const BorderSide(color: AppColors.electric),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                  child: TextField(
+                    controller: _phoneController,
+                    keyboardType: TextInputType.phone,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    maxLength: 9,
+                    decoration: InputDecoration(
+                      hintText: "24 000 0000",
+                      errorText: _errorText,
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: const OutlineInputBorder(borderSide: BorderSide.none),
+                      counterText: "",
                     ),
-                    child: const Text("Vodafone Cash"),
                   ),
                 ),
               ],
-            )
+            ),
+            const SizedBox(height: 20),
+            PrimaryButton(
+              label: _isLoading ? "Sending..." : "Send verification code",
+              isLoading: _isLoading,
+              onPressed: _isLoading ? null : _sendCode,
+            ),
           ],
         ),
       ),

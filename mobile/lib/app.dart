@@ -2,7 +2,10 @@ import "package:flutter/material.dart";
 import "routes.dart";
 import "screens/delivery_screen.dart";
 import "screens/home_screen.dart";
+import "screens/location_permission_screen.dart";
 import "screens/login_screen.dart";
+import "screens/otp_verification_screen.dart";
+import "screens/profile_setup_screen.dart";
 import "screens/ride_request_screen.dart";
 import "screens/splash_screen.dart";
 import "screens/tracking_screen.dart";
@@ -41,10 +44,13 @@ class _MoveGHAppState extends State<MoveGHApp> {
         title: "MoveGH",
         theme: buildAppTheme(),
         debugShowCheckedModeBanner: false,
-        initialRoute: AppRoutes.splash,
+        initialRoute: AppRoutes.welcome,
         routes: {
-          AppRoutes.splash: (context) => const SplashScreen(),
-          AppRoutes.login: (context) => const LoginScreen(),
+          AppRoutes.welcome: (context) => const SplashScreen(),
+          AppRoutes.phone: (context) => const LoginScreen(),
+          AppRoutes.otp: (context) => const OtpVerificationScreen(),
+          AppRoutes.profile: (context) => const ProfileSetupScreen(),
+          AppRoutes.location: (context) => const LocationPermissionScreen(),
           AppRoutes.home: (context) => const HomeScreen(),
           AppRoutes.rideRequest: (context) => const RideRequestScreen(),
           AppRoutes.delivery: (context) => const DeliveryScreen(),
