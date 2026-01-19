@@ -32,6 +32,8 @@ flutter pub get
 ### 4) Start the backend (local dev)
 ```powershell
 cd ..\backend
+cmd /c "node -v"
+cmd /c "npm -v"
 Get-ExecutionPolicy -List
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned -Force
 # Close and reopen PowerShell if this was changed.
@@ -51,21 +53,33 @@ Open in a browser:
 http://localhost:8080
 ```
 
-### 6) Run on Web (Chrome)
+### 6) Run Driver app (web-server)
+```powershell
+cd ..\mobile\driver_app
+flutter pub get
+flutter run -d web-server --web-port 8081 --dart-define=MOVEGH_API_BASE_URL=http://localhost:3000/v1
+```
+
+Open in a browser:
+```
+http://localhost:8081
+```
+
+### 7) Run on Web (Chrome)
 ```powershell
 cd ..\mobile
 flutter config --enable-web
 flutter run -d chrome --dart-define=MOVEGH_API_BASE_URL=http://localhost:3000/v1 --dart-define=MOVEGH_USE_MOCK=false
 ```
 
-### 7) Quick manual test (happy path)
+### 8) Quick manual test (happy path)
 1. Open the app and tap "Continue with phone number".
 2. Enter a Ghana number and request OTP.
 3. Enter any 4-6 digit code and continue.
 4. Fill profile and allow location.
 5. Request a ride and verify tracking updates from "Searching for driver" to "Driver assigned".
 
-### 8) Run on Android Emulator (optional)
+### 9) Run on Android Emulator (optional)
 1. Install Android Studio + Android SDK
 2. In Android Studio, install a system image and create an emulator
 3. Accept licenses:

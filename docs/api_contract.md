@@ -199,12 +199,17 @@ Poll for current ride request.
 Response:
 ```json
 {
-  "request_id": "req_001",
-  "pickup": "Accra Mall",
-  "dropoff": "Osu Oxford St",
-  "fare": 24,
-  "currency": "GHS",
-  "eta_min": 6
+  "requests": [
+    {
+      "request_id": "req_001",
+      "pickup": "Osu Junction",
+      "dropoff": "East Legon",
+      "mode": "car",
+      "notes": "Blue gate",
+      "amount": 24,
+      "currency": "GHS"
+    }
+  ]
 }
 ```
 

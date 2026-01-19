@@ -10,6 +10,22 @@ export class DriversService {
       addVehicle: {'status': 'added'},
       getEarnings: {'today': 180, 'week': 920, 'currency': 'GHS'},
       updateLocation: {'status': 'updated'},
+      setStatus: {'status': 'online'},
+      getRequests: {
+        'requests': [
+          {
+            'request_id': 'req_001',
+            'pickup': 'Osu Junction',
+            'dropoff': 'East Legon',
+            'mode': 'car',
+            'notes': 'Blue gate',
+            'amount': 24,
+            'currency': 'GHS'
+          }
+        ]
+      },
+      acceptRequest: {'status': 'accepted'},
+      rejectRequest: {'status': 'rejected'},
     };
     const response = responses[action];
     if (response) {

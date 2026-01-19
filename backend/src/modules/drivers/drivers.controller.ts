@@ -35,4 +35,24 @@ export class DriversController {
     return this.service.stub("updateLocation");
   }
 
+  @Post("status")
+  setStatus(@Body() body: Record<string, unknown>) {
+    return this.service.stub("setStatus");
+  }
+
+  @Get("requests")
+  getRequests(@Query() query: Record<string, string>) {
+    return this.service.stub("getRequests");
+  }
+
+  @Post("requests/:requestId/accept")
+  acceptRequest(@Param() params: Record<string, string>) {
+    return this.service.stub("acceptRequest");
+  }
+
+  @Post("requests/:requestId/reject")
+  rejectRequest(@Param() params: Record<string, string>) {
+    return this.service.stub("rejectRequest");
+  }
+
 }

@@ -1,3 +1,4 @@
+import "dart:async";
 import "package:flutter/material.dart";
 import "../models/delivery_request.dart";
 import "../services/app_services.dart";
@@ -17,13 +18,41 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
   final TextEditingController _notesController = TextEditingController();
   bool _isLoading = false;
   String? _deliveryStatus;
+  String? _deliveryId;
+  Timer? _pollTimer;
+  int _pollCount = 0;
 
   @override
   void dispose() {
+    _pollTimer?.cancel();
     _pickupController.dispose();
     _dropoffController.dispose();
     _notesController.dispose();
     super.dispose();
+  }
+
+  void _startPolling() {
+    _pollTimer?.cancel();
+    final deliveryId = _deliveryId;
+    if (deliveryId == null) {
+      return;
+    }
+    _pollCount = 0;
+    _pollTimer = Timer.periodic(const Duration(seconds: 4), (_) async {
+      _pollCount += 1;
+      try {
+        final statusResponse = await AppServices.deliveries.getDelivery(deliveryId);
+        final nextStatus = statusResponse["status"]?.toString();
+        if (mounted && nextStatus != null) {
+          setState(() => _deliveryStatus = nextStatus);
+        }
+        if (nextStatus == "completed" || nextStatus == "cancelled" || _pollCount >= 6) {
+          _pollTimer?.cancel();
+        }
+      } catch (_) {
+        _pollTimer?.cancel();
+      }
+    });
   }
 
   Future<void> _handleRequest() async {
@@ -38,8 +67,10 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
       final response = await AppServices.deliveries.requestDelivery(request);
       final deliveryId = response["delivery_id"]?.toString();
       if (deliveryId != null && deliveryId.isNotEmpty) {
+        _deliveryId = deliveryId;
         final statusResponse = await AppServices.deliveries.getDelivery(deliveryId);
         _deliveryStatus = statusResponse["status"]?.toString();
+        _startPolling();
       }
       if (!mounted) {
         return;
