@@ -1,0 +1,57 @@
+MoveGH Work Checklist (VM)
+
+Completed:
+[x] Rider app auth stores session token and auto-sets Authorization header
+[x] Splash screen restores session and skips login when token exists
+[x] OTP verify stores token in shared preferences
+[x] Ride flow uses API with mock fallback and status polling
+[x] Backend rides endpoints use in-memory ride state progression
+[x] Docs updated: architecture end-to-end flow and api contract
+[x] Driver app scaffold included in repo
+[x] Push branch feature/rider-backend-wiring from Windows (VM DNS blocked)
+
+Artifacts created:
+[x] /home/charlesay/movegh/movegh_feature.bundle
+[x] /home/charlesay/movegh_worktree_backup.tgz
+
+Pending:
+(none)
+
+=== GHANA-FRIENDLY PICKUP SYSTEM (Rider App) ===
+[ ] (Planned) GPS address-dependent pickup (exact address input + map pin)
+[~] (In Progress) Scheduled pickups (pre-book)
+  [ ] (Planned) School runs
+  [ ] (Planned) Work schedule pickups
+  [ ] (Planned) Business routes
+  [ ] (Planned) Medical trips
+[x] (Completed) Landmark-based pickups (Markets/Junctions/Churches/Lorry stations)
+
+=== USER APP FEATURES (RIDER / CUSTOMER) ===
+Core Features:
+[x] (Completed) Create account (phone number / OTP)
+[x] (Completed) Login persistence (stay signed-in)
+[x] (Completed) Request ride or delivery (end-to-end rider -> backend)
+[~] (In Progress) Choose vehicle type (car/okada/pragya/aboboyaa)
+[x] (Completed) Fare estimate before trip
+[~] (In Progress) Live GPS tracking screen
+[~] (In Progress) In-app call
+[ ] (Planned) In-app chat
+[ ] (Planned) Trip history
+[ ] (Planned) Rate driver
+[~] (In Progress) SOS emergency button
+
+Ghana-Specific:
+[x] (Completed) Landmark-based pickup points
+[~] (In Progress) Mobile Money payments (MTN MoMo, Vodafone Cash)
+[ ] (Planned) Multi-language support (English now, Twi later)
+[~] (In Progress) Ride scheduling
+[~] (In Progress) Share trip with family
+
+Delivery & Logistics scope (complete):
+[x] Parcel delivery
+[x] Food & grocery delivery
+[x] Market trader deliveries
+[x] SME & shop deliveries
+[x] Inter-city & rural deliveries
+[x] Same-day & instant city delivery
+[x] Small business & personal packages
