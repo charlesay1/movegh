@@ -2,6 +2,8 @@
 
 This workspace contains documentation, UI previews, backend scaffolding, and a Flutter app scaffold for MoveGH.
 
+See docs/PLATFORM_STRATEGY.md for our platform approach.
+
 ## Structure
 - docs/ MoveGH product requirements and backend architecture.
 - ui/ HTML previews for UI direction and screen layouts.
