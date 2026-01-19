@@ -6,6 +6,8 @@ type RideRecord = {
   ride_id: string;
   pickup?: string;
   dropoff?: string;
+  mode?: string;
+  notes?: string;
   status: RideStatus;
   amount: number;
   currency: string;
@@ -38,10 +40,14 @@ export class RidesService {
   requestRide(payload: Record<string, unknown>) {
     const pickup = payload["pickup"];
     const dropoff = payload["dropoff"];
+    const mode = payload["mode"];
+    const notes = payload["notes"];
     const ride: RideRecord = {
       ride_id: "ride_001",
       pickup: pickup != null ? String(pickup) : undefined,
       dropoff: dropoff != null ? String(dropoff) : undefined,
+      mode: mode != null ? String(mode) : undefined,
+      notes: notes != null ? String(notes) : undefined,
       status: "requested",
       amount: 24,
       currency: "GHS",

@@ -5,5 +5,6 @@ import { UssdService } from "./ussd.service";
 @Module({
   controllers: [UssdController],
   providers: [UssdService],
+  exports: [UssdService],
 })
 export class UssdModule {}

@@ -1,6 +1,9 @@
 # MoveGH API Contract (Draft)
 
-Base URL (local dev): `http://127.0.0.1:3000`
+Base URL (local dev): `http://localhost:3000/v1`
+
+Authenticated requests should include:
+`Authorization: Bearer <token>`
 
 ## Auth
 
@@ -57,7 +60,8 @@ Request:
 {
   "pickup": "Accra Mall",
   "dropoff": "Osu Oxford St",
-  "mode": "car"
+  "mode": "car",
+  "notes": "Blue gate near the church"
 }
 ```
 
@@ -83,6 +87,63 @@ Response:
   "eta_min": 4,
   "amount": 24,
   "currency": "GHS"
+}
+```
+
+## Rider: Profile
+
+### PATCH /users/me
+Update rider profile details.
+
+Request:
+```json
+{
+  "first_name": "Ama",
+  "last_name": "Mensah",
+  "email": "ama@movegh.com"
+}
+```
+
+Response:
+```json
+{
+  "status": "updated"
+}
+```
+
+## Rider: Deliveries
+
+### POST /deliveries/request
+Create a delivery request.
+
+Request:
+```json
+{
+  "pickup": "Makola Market",
+  "dropoff": "Tema Station",
+  "package_size": "Small",
+  "notes": "Call on arrival"
+}
+```
+
+Response:
+```json
+{
+  "delivery_id": "delivery_001",
+  "status": "requested",
+  "amount": 18,
+  "currency": "GHS"
+}
+```
+
+### GET /deliveries/:deliveryId
+Get current delivery status.
+
+Response:
+```json
+{
+  "delivery_id": "delivery_001",
+  "status": "requested"
 }
 ```
 

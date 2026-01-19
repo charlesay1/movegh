@@ -16,6 +16,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
   final TextEditingController _dropoffController = TextEditingController();
   final TextEditingController _notesController = TextEditingController();
   bool _isLoading = false;
+  String? _deliveryStatus;
 
   @override
   void dispose() {
@@ -34,12 +35,23 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
         packageSize: "Small",
         notes: _notesController.text.trim(),
       );
-      await AppServices.deliveries.requestDelivery(request);
+      final response = await AppServices.deliveries.requestDelivery(request);
+      final deliveryId = response["delivery_id"]?.toString();
+      if (deliveryId != null && deliveryId.isNotEmpty) {
+        final statusResponse = await AppServices.deliveries.getDelivery(deliveryId);
+        _deliveryStatus = statusResponse["status"]?.toString();
+      }
       if (!mounted) {
         return;
       }
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Delivery request sent")),
+        SnackBar(
+          content: Text(
+            _deliveryStatus == null
+                ? "Delivery request sent"
+                : "Delivery status: ${_deliveryStatus!}",
+          ),
+        ),
       );
     } catch (_) {
       if (!mounted) {
@@ -123,6 +135,14 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
               ),
             ),
             const SizedBox(height: 18),
+            if (_deliveryStatus != null)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: Text(
+                  "Status: $_deliveryStatus",
+                  style: const TextStyle(fontSize: 12, color: Color(0xFF0B4E7A)),
+                ),
+              ),
             Container(
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(

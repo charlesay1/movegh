@@ -1,5 +1,7 @@
 import "package:flutter/material.dart";
+import "../app_config.dart";
 import "../routes.dart";
+import "../services/app_services.dart";
 import "../theme/app_theme.dart";
 import "../widgets/mode_option.dart";
 import "../widgets/primary_button.dart";
@@ -15,6 +17,26 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _intentIndex = 0;
+  String _healthLabel = "Checking...";
+
+  @override
+  void initState() {
+    super.initState();
+    _checkBackend();
+  }
+
+  Future<void> _checkBackend() async {
+    try {
+      await AppServices.apiClient.getJson("/health");
+      if (mounted) {
+        setState(() => _healthLabel = "Backend reachable");
+      }
+    } catch (_) {
+      if (mounted) {
+        setState(() => _healthLabel = "Backend unreachable");
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +65,29 @@ class _HomeScreenState extends State<HomeScreen> {
           RideDeliveryToggle(
             activeIndex: _intentIndex,
             onChanged: (value) => setState(() => _intentIndex = value),
+          ),
+          const SizedBox(height: 12),
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(color: const Color(0xFFE2E8F0)),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "API: ${AppConfig.apiBaseUrl}",
+                  style: const TextStyle(fontSize: 11, color: Color(0xFF475569)),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  _healthLabel,
+                  style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
+                ),
+              ],
+            ),
           ),
           const SizedBox(height: 12),
           const WhereToInput(

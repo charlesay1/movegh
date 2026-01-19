@@ -1,6 +1,6 @@
 import "dart:convert";
 import "package:http/http.dart" as http;
-import "../config/app_config.dart";
+import "../app_config.dart";
 
 class ApiClient {
   ApiClient({http.Client? client}) : _client = client ?? http.Client();
@@ -17,19 +17,34 @@ class ApiClient {
   }
 
   Future<Map<String, dynamic>> getJson(String path) async {
-    final response = await _client.get(
-      Uri.parse("${AppConfig.apiBaseUrl}$path"),
-      headers: _headers(),
-    );
+    final response = await _client
+        .get(
+          Uri.parse("${AppConfig.apiBaseUrl}$path"),
+          headers: _headers(),
+        )
+        .timeout(const Duration(milliseconds: AppConfig.apiTimeoutMs));
     return _decode(response);
   }
 
   Future<Map<String, dynamic>> postJson(String path, Map<String, dynamic> body) async {
-    final response = await _client.post(
-      Uri.parse("${AppConfig.apiBaseUrl}$path"),
-      headers: _headers(),
-      body: jsonEncode(body),
-    );
+    final response = await _client
+        .post(
+          Uri.parse("${AppConfig.apiBaseUrl}$path"),
+          headers: _headers(),
+          body: jsonEncode(body),
+        )
+        .timeout(const Duration(milliseconds: AppConfig.apiTimeoutMs));
+    return _decode(response);
+  }
+
+  Future<Map<String, dynamic>> patchJson(String path, Map<String, dynamic> body) async {
+    final response = await _client
+        .patch(
+          Uri.parse("${AppConfig.apiBaseUrl}$path"),
+          headers: _headers(),
+          body: jsonEncode(body),
+        )
+        .timeout(const Duration(milliseconds: AppConfig.apiTimeoutMs));
     return _decode(response);
   }
 
