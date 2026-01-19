@@ -2,6 +2,8 @@ import "dart:async";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "../routes.dart";
+import "../services/app_services.dart";
+import "../services/session_store.dart";
 import "../theme/app_theme.dart";
 import "../widgets/primary_button.dart";
 
@@ -52,6 +54,12 @@ class _OtpScreenState extends State<OtpScreen> {
   }
 
   Future<void> _verify() async {
+    if (_phone == null || _phone!.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Missing phone number")),
+      );
+      return;
+    }
     final code = _otpController.text.trim();
     if (code.length < 4 || code.length > 6) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -61,7 +69,25 @@ class _OtpScreenState extends State<OtpScreen> {
     }
 
     setState(() => _isLoading = true);
-    await Future.delayed(const Duration(milliseconds: 500));
+    try {
+      final response = await AppServices.auth.verifyOtp(_phone ?? "", code);
+      final token = response["token"]?.toString();
+      if (token == null || token.isEmpty) {
+        throw Exception("Missing session token");
+      }
+      final session = await SessionStore.instance();
+      await session.setSession(token: token, phone: _phone ?? "");
+      AppServices.apiClient.setToken(token);
+    } catch (error) {
+      if (!mounted) {
+        return;
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Verification failed: $error")),
+      );
+      setState(() => _isLoading = false);
+      return;
+    }
     if (!mounted) {
       return;
     }

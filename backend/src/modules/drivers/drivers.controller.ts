@@ -35,4 +35,24 @@ export class DriversController {
     return this.service.stub("updateLocation");
   }
 
+  @Post("status")
+  setStatus(@Body() body: Record<string, unknown>) {
+    return this.service.setStatus({ online: Boolean(body.online) });
+  }
+
+  @Get("requests")
+  getRequests() {
+    return this.service.getRequests();
+  }
+
+  @Post("requests/:requestId/accept")
+  acceptRequest(@Param("requestId") requestId: string) {
+    return this.service.acceptRequest(requestId);
+  }
+
+  @Post("requests/:requestId/reject")
+  rejectRequest(@Param("requestId") requestId: string) {
+    return this.service.rejectRequest(requestId);
+  }
+
 }

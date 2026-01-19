@@ -1,4 +1,7 @@
+import "dart:async";
 import "package:flutter/material.dart";
+import "../models/driver_request.dart";
+import "../services/app_services.dart";
 import "../theme/app_theme.dart";
 import "../widgets/primary_button.dart";
 
@@ -11,6 +14,113 @@ class DriverHomeScreen extends StatefulWidget {
 
 class _DriverHomeScreenState extends State<DriverHomeScreen> {
   bool _isOnline = false;
+  DriverRequest? _currentRequest;
+  Timer? _poller;
+  bool _isUpdatingStatus = false;
+
+  @override
+  void dispose() {
+    _poller?.cancel();
+    super.dispose();
+  }
+
+  Future<void> _toggleOnline(bool value) async {
+    setState(() => _isUpdatingStatus = true);
+    try {
+      await AppServices.dispatch.setStatus(online: value);
+      if (!mounted) {
+        return;
+      }
+      setState(() {
+        _isOnline = value;
+        _isUpdatingStatus = false;
+        if (!value) {
+          _currentRequest = null;
+        }
+      });
+      if (value) {
+        _startPolling();
+      } else {
+        _poller?.cancel();
+      }
+    } catch (error) {
+      if (!mounted) {
+        return;
+      }
+      setState(() => _isUpdatingStatus = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Could not update status: $error")),
+      );
+    }
+  }
+
+  void _startPolling() {
+    _poller?.cancel();
+    _poller = Timer.periodic(const Duration(seconds: 4), (_) async {
+      if (!_isOnline) {
+        return;
+      }
+      try {
+        final request = await AppServices.dispatch.fetchCurrentRequest();
+        if (!mounted) {
+          return;
+        }
+        if (request == null) {
+          return;
+        }
+        setState(() => _currentRequest = request);
+      } catch (error) {
+        if (!mounted) {
+          return;
+        }
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Dispatch error: $error")),
+        );
+      }
+    });
+  }
+
+  Future<void> _acceptRequest() async {
+    final request = _currentRequest;
+    if (request == null) {
+      return;
+    }
+    try {
+      await AppServices.dispatch.acceptRequest(request.id);
+      if (!mounted) {
+        return;
+      }
+      setState(() => _currentRequest = null);
+    } catch (error) {
+      if (!mounted) {
+        return;
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Could not accept: $error")),
+      );
+    }
+  }
+
+  Future<void> _rejectRequest() async {
+    final request = _currentRequest;
+    if (request == null) {
+      return;
+    }
+    try {
+      await AppServices.dispatch.rejectRequest(request.id);
+      if (!mounted) {
+        return;
+      }
+      setState(() => _currentRequest = null);
+    } catch (error) {
+      if (!mounted) {
+        return;
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Could not reject: $error")),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +183,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                   scale: 1.3,
                   child: Switch(
                     value: _isOnline,
-                    onChanged: (value) => setState(() => _isOnline = value),
+                    onChanged: _isUpdatingStatus ? null : _toggleOnline,
                     activeColor: AppColors.ghanaGreen,
                   ),
                 ),
@@ -98,30 +208,37 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                   style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
                 ),
                 const SizedBox(height: 12),
-                const Text("Pickup: Osu Junction"),
-                const Text("Dropoff: East Legon"),
-                const SizedBox(height: 8),
-                const Text("Fare: GHS 28.00 • ETA: 6 min"),
-                const SizedBox(height: 16),
-                Row(
-                  children: [
-                    Expanded(
-                      child: PrimaryButton(
-                        label: "Accept",
-                        onPressed: () {},
-                        backgroundColor: AppColors.ghanaGreen,
+                if (_currentRequest == null)
+                  const Text("No active requests right now.")
+                else ...[
+                  Text("Pickup: ${_currentRequest!.pickup}"),
+                  Text("Dropoff: ${_currentRequest!.dropoff}"),
+                  const SizedBox(height: 8),
+                  Text(
+                    "Fare: GHS ${_currentRequest!.fareGhs.toStringAsFixed(2)} • "
+                    "ETA: ${_currentRequest!.etaMinutes} min",
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: PrimaryButton(
+                          label: "Accept",
+                          onPressed: _acceptRequest,
+                          backgroundColor: AppColors.ghanaGreen,
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: PrimaryButton(
-                        label: "Reject",
-                        onPressed: () {},
-                        backgroundColor: AppColors.ghanaRed,
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: PrimaryButton(
+                          label: "Reject",
+                          onPressed: _rejectRequest,
+                          backgroundColor: AppColors.ghanaRed,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
+                ],
               ],
             ),
           ),
@@ -143,8 +260,8 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                   style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
                 ),
                 const SizedBox(height: 12),
-                Row(
-                  children: const [
+                const Row(
+                  children: [
                     Expanded(
                       child: _EarningItem(label: "Today", value: "GHS 180"),
                     ),

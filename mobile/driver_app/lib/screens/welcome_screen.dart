@@ -1,10 +1,33 @@
 import "package:flutter/material.dart";
 import "../routes.dart";
+import "../services/app_services.dart";
+import "../services/session_store.dart";
 import "../theme/app_theme.dart";
 import "../widgets/primary_button.dart";
 
-class WelcomeScreen extends StatelessWidget {
+class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
+
+  @override
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
+}
+
+class _WelcomeScreenState extends State<WelcomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _redirectIfLoggedIn());
+  }
+
+  Future<void> _redirectIfLoggedIn() async {
+    final session = await SessionStore.instance();
+    final token = session.token;
+    if (token == null || token.isEmpty || !mounted) {
+      return;
+    }
+    AppServices.apiClient.setToken(token);
+    Navigator.pushReplacementNamed(context, AppRoutes.home);
+  }
 
   @override
   Widget build(BuildContext context) {

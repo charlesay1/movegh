@@ -23,6 +23,14 @@
 - /admin_web
 - /backend
 
+## Driver dispatch flow (MVP)
+1) Driver logs in with phone + OTP.
+2) Driver toggles Online.
+3) App polls `/drivers/requests` every 3-5 seconds.
+4) Incoming request appears with pickup/dropoff, fare, ETA.
+5) Driver taps Accept/Reject which calls the dispatch endpoints.
+6) Backend responds and app clears or updates the request state.
+
 ## Android build setup notes (VM)
 - Android SDK: `/home/charlesay/Android/Sdk`
 - Required env vars (add to `~/.bashrc`):

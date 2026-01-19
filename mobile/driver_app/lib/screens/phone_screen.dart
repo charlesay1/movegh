@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "../routes.dart";
+import "../services/app_services.dart";
 import "../theme/app_theme.dart";
 import "../widgets/primary_button.dart";
 
@@ -55,7 +56,18 @@ class _PhoneScreenState extends State<PhoneScreen> {
 
     final phone = "+233$raw";
     setState(() => _isLoading = true);
-    await Future.delayed(const Duration(milliseconds: 400));
+    try {
+      await AppServices.auth.requestOtp(phone);
+    } catch (error) {
+      if (!mounted) {
+        return;
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Could not send code: $error")),
+      );
+      setState(() => _isLoading = false);
+      return;
+    }
     if (!mounted) {
       return;
     }
