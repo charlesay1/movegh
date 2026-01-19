@@ -32,6 +32,8 @@ flutter pub get
 ### 4) Start the backend (local dev)
 ```powershell
 cd ..\backend
+cmd /c "node -v"
+cmd /c "npm -v"
 Get-ExecutionPolicy -List
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned -Force
 # Close and reopen PowerShell if this was changed.

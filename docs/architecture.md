@@ -23,6 +23,11 @@
 - /admin_web
 - /backend
 
+## Shared UI/services suggestion
+- Keep shared Flutter UI components and API clients in one place (e.g. `/mobile/shared_ui` or `/mobile/packages/shared_ui`).
+- Rider and Driver apps can import shared widgets, themes, and services to stay consistent.
+- Current `mobile/driver_app` is a scaffold only; no file moves yet.
+
 ## End-to-end flow (Rider to Driver)
 - Rider requests a ride with pickup + dropoff.
 - Backend creates a ride in "requested" status.
