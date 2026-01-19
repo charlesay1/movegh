@@ -23,6 +23,15 @@
 - /admin_web
 - /backend
 
+## End-to-end flow (Rider to Driver)
+- Rider requests a ride with pickup + dropoff.
+- Backend creates a ride in "requested" status.
+- Driver toggles online and polls for available requests.
+- Driver accepts a request and backend marks it "assigned".
+- Rider app polls ride status and shows driver + ETA.
+- Driver starts trip ("in_progress") and completes it ("completed").
+- Rider app updates status until completed.
+
 ## Android build setup notes (VM)
 - Android SDK: `/home/charlesay/Android/Sdk`
 - Required env vars (add to `~/.bashrc`):

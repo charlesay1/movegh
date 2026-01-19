@@ -91,9 +91,14 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
 
     setState(() => _isLoading = true);
     try {
-      await AppServices.auth.verifyOtp(phone, code);
+      final response = await AppServices.auth.verifyOtp(phone, code);
+      final token = response["token"]?.toString();
+      if (token == null || token.isEmpty) {
+        throw Exception("Missing session token");
+      }
       final session = await SessionStore.instance();
-      await session.setLoggedIn(phone);
+      await session.setSession(token: token, phone: phone);
+      AppServices.apiClient.setToken(token);
       if (!mounted) {
         return;
       }

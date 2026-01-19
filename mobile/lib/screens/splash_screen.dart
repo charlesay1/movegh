@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "../routes.dart";
+import "../services/app_services.dart";
 import "../services/session_store.dart";
 import "../theme/app_theme.dart";
 import "../widgets/primary_button.dart";
@@ -22,6 +23,10 @@ class _SplashScreenState extends State<SplashScreen> {
     final session = await SessionStore.instance();
     if (!mounted || !session.isLoggedIn) {
       return;
+    }
+    final token = session.token;
+    if (token != null && token.isNotEmpty) {
+      AppServices.apiClient.setToken(token);
     }
 
     if (!session.isProfileComplete) {

@@ -7,37 +7,37 @@ export class RidesController {
 
   @Post()
   createRide(@Body() body: Record<string, unknown>) {
-    return this.service.stub("createRide");
+    return this.service.requestRide(body);
   }
 
   @Post("request")
   requestRide(@Body() body: Record<string, unknown>) {
-    return this.service.stub("createRide");
+    return this.service.requestRide(body);
   }
 
   @Post(":rideId/cancel")
   cancelRide(@Body() body: Record<string, unknown>, @Param() params: Record<string, string>) {
-    return this.service.stub("cancelRide");
+    return this.service.cancelRide();
   }
 
   @Post(":rideId/accept")
   acceptRide(@Body() body: Record<string, unknown>, @Param() params: Record<string, string>) {
-    return this.service.stub("acceptRide");
+    return this.service.acceptRide(params.rideId);
   }
 
   @Post(":rideId/start")
   startRide(@Body() body: Record<string, unknown>, @Param() params: Record<string, string>) {
-    return this.service.stub("startRide");
+    return this.service.startRide(params.rideId);
   }
 
   @Post(":rideId/complete")
   completeRide(@Body() body: Record<string, unknown>, @Param() params: Record<string, string>) {
-    return this.service.stub("completeRide");
+    return this.service.completeRide(params.rideId);
   }
 
   @Get(":rideId")
   getRide(@Param() params: Record<string, string>, @Query() query: Record<string, string>) {
-    return this.service.stub("getRide");
+    return this.service.getRide(params.rideId);
   }
 
 }

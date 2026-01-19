@@ -32,7 +32,7 @@ class _TrackingScreenState extends State<TrackingScreen> {
   String _phaseLabel(RidePhase phase) {
     switch (phase) {
       case RidePhase.requested:
-        return "Requested";
+        return "Searching for driver";
       case RidePhase.assigned:
         return "Driver assigned";
       case RidePhase.arrived:
