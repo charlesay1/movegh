@@ -70,3 +70,4 @@ Delivery & Logistics scope (complete):
 [x] Driver app: Accept/Reject request
 [x] Driver app: Current job screen (basic)
 [x] Driver app: Job lifecycle updates (arrived → in_trip → complete)
+[x] Virtual test platform created (start_all + smoke tests + dashboard)

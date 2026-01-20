@@ -113,3 +113,19 @@ flutter run -d chrome --dart-define=MOVEGH_API_BASE_URL=http://localhost:3000/v1
 ```powershell
 scp charlesay@192.168.1.10:/home/charlesay/movegh/mobile/movegh_web_build.tgz .
 ```
+
+## Virtual Test Platform (recommended)
+Run everything together (Backend + Rider + Driver) with one command:
+```cmd
+tools\test_platform\start_all_windows.cmd
+```
+
+Run smoke tests:
+```cmd
+tools\test_platform\smoke_test_windows.cmd
+```
+
+Open the dashboard:
+```
+file:///C:/Users/ckora/movegh/tools/test_platform/dashboard/index.html
+```

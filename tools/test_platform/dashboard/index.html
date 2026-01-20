@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MoveGH Test Dashboard</title>
+    <style>
+      :root {
+        --bg: #0b1e34;
+        --panel: #0f2744;
+        --accent: #84e1bc;
+        --text: #f5f7fb;
+      }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #0b1e34 0%, #0a2a4a 50%, #0f2744 100%);
+        color: var(--text);
+      }
+      .wrap {
+        max-width: 880px;
+        margin: 0 auto;
+        padding: 32px 20px 60px;
+      }
+      h1 {
+        font-size: 28px;
+        margin: 0 0 8px;
+      }
+      p {
+        margin: 6px 0 18px;
+        color: #cbd5f5;
+      }
+      .panel {
+        background: var(--panel);
+        border-radius: 16px;
+        padding: 18px;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+      }
+      .buttons {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 14px;
+      }
+      button {
+        border: none;
+        border-radius: 12px;
+        padding: 14px 16px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        background: #102d4f;
+        color: var(--text);
+        transition: transform 0.1s ease, box-shadow 0.1s ease;
+      }
+      button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 10px 16px rgba(0, 0, 0, 0.25);
+      }
+      .status {
+        margin-top: 16px;
+        padding: 12px;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.06);
+      }
+      .pill {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: rgba(132, 225, 188, 0.2);
+        color: var(--accent);
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .muted {
+        color: #9fb2d7;
+        font-size: 12px;
+      }
+      a {
+        color: var(--accent);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>MoveGH Virtual Test Dashboard</h1>
+      <p>Quick links to Rider, Driver, and backend health checks.</p>
+
+      <div class="panel">
+        <div class="buttons">
+          <button onclick="openUrl('http://localhost:8080')">Open Rider (8080)</button>
+          <button onclick="openUrl('http://localhost:8081')">Open Driver (8081)</button>
+          <button onclick="checkHealth()">Check Backend Health</button>
+          <button onclick="showSmoke()">Run Smoke Tests (instructions)</button>
+        </div>
+        <div class="status" id="status">
+          <div class="pill">API Base: http://localhost:3000/v1</div>
+          <div class="muted">Backend status will appear here.</div>
+        </div>
+      </div>
+
+      <p class="muted">
+        Smoke tests are run from Windows CMD:
+        <code>tools\test_platform\smoke_test_windows.cmd</code>
+      </p>
+    </div>
+
+    <script>
+      function openUrl(url) {
+        window.open(url, "_blank");
+      }
+
+      async function checkHealth() {
+        const status = document.getElementById("status");
+        status.innerHTML = "Checking backend...";
+        try {
+          const res = await fetch("http://localhost:3000/v1/health");
+          const data = await res.json();
+          status.innerHTML = `<div class='pill'>Backend OK</div><div class='muted'>${JSON.stringify(data)}</div>`;
+        } catch (error) {
+          status.innerHTML = `<div class='pill'>Backend UNREACHABLE</div><div class='muted'>${error}</div>`;
+        }
+      }
+
+      function showSmoke() {
+        alert("Run: tools\\test_platform\\smoke_test_windows.cmd in a Windows terminal.");
+      }
+    </script>
+  </body>
+</html>
